@@ -35,6 +35,7 @@ enum layers {
 #define FKEYS    MO(_FUNCTION)
 #define NUM      MO(_NUM)
 
+#define FK_SPC   LT(_FUNCTION, KC_SPC)
 #define NAV_SPC  LT(_NAV, KC_SPC)
 #define BRC_ENT  LT(_BRACKETS, KC_ENT)
 
@@ -72,14 +73,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | LShift |   Z  |   X  |   C  |   D  |   V  | [ {  |      |  |GAMING|  ] } |   K  |   H  | ,  < | . >  | /  ? | RShift |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      | LGUI | BRC/ | Space| Num  |  | Sym  | Space|BSpace| RAlt | Menu |
- *                        |      |      | Enter| Nav  |      |  |      |      |      |      |      |
+ *                        |      |      | Enter| Nav  |      |  |      | Fkeys|      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_COLEMAK_DH] = LAYOUT(
      KC_TAB  ,  KC_Q ,  KC_W   ,  KC_F  , KC_P ,   KC_B ,                                          KC_J,   KC_L ,  KC_U ,   KC_Y ,KC_SCLN, KC_DEL,
      CTL_ESC , HOME_A, HOME_R  , HOME_S , HOME_T,  KC_G ,                                          KC_M, HOME_N , HOME_E, HOME_I ,HOME_O, CTL_QUOT,
      KC_LSFT ,  KC_Z ,  KC_X   ,  KC_C  , KC_D ,   KC_V ,   KC_LBRC , GAMING, GAMING  , KC_RBRC, KC_K,   KC_H ,KC_COMM, KC_DOT ,KC_SLSH, KC_RSFT,
-                                 _______, KC_LGUI, BRC_ENT, NAV_SPC , NUM    ,   SYM     , KC_SPC ,KC_BSPC, KC_RALT, KC_APP
+                                 _______, KC_LGUI, BRC_ENT, NAV_SPC , NUM    ,   SYM     ,FK_SPC,KC_BSPC, KC_RALT, KC_APP
     ),
 
 /*
@@ -171,16 +172,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        | LAlt | LCtrl|LShift| LGUI |      |                              |   *  |   4  |   5  |   6  |   +  |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |      |  |      |      |   =  |   1  |   2  |   3  | Enter|        |
+ * |        |      |      |      |      |      |      |      |  |      |      |   =  |   1  |   2  |   3  |   =  |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |      |      |  |      |   0  |   .  |   (  |   )  |
+ *                        |      |      |      |      |      |  |   .  |   0  |BSpace|Enter |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_NUM] = LAYOUT(
-      _______, _______, _______, _______, _______, _______,                                    KC_PSLS, KC_7  , KC_8  , KC_9  , KC_PMNS, KC_DEL ,
-      _______, KC_LALT, KC_LCTL, KC_LSFT, KC_LGUI, _______,                                    KC_PAST, KC_4  , KC_5  , KC_6  , KC_PPLS, _______,
-      _______, _______, _______, _______, _______, _______,_______, _______, _______, _______, KC_PEQL, KC_1  , KC_2  , KC_3  , KC_PENT, _______,
-                                 _______, _______, _______, _______, _______, _______, KC_P0  , KC_PDOT, KC_LPRN, KC_RPRN
+      _______, _______, _______, _______, _______, _______,                                     KC_SLSH, KC_7   , KC_8   , KC_9   , KC_MINS, KC_DEL ,
+      _______, KC_LALT, KC_LCTL, KC_LSFT, KC_LGUI, _______,                                     KC_ASTR, KC_4   , KC_5   , KC_6   , KC_PLUS, KC_LPRN,
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_EQL , KC_1   , KC_2   , KC_3   , KC_EQL , KC_RPRN,
+                                 _______, _______, _______, _______, _______, KC_DOT , KC_0   , _______, KC_ENT , _______
     ),
 
 /*
@@ -300,11 +301,13 @@ bool oled_task_user(void) {
 
         // Write host Keyboard LED Status to OLEDs
         led_t led_usb_state = host_keyboard_led_state();
-        // force numlock
-        if (!led_usb_state.num_lock) {
-            register_code(KC_NUMLOCK);
-            unregister_code(KC_NUMLOCK);
-        }
+
+        // force numlock not needed ... no numblock anymore
+        // if (!led_usb_state.num_lock) {
+        //     register_code(KC_NUMLOCK);
+        //     unregister_code(KC_NUMLOCK);
+        // }
+
         oled_write_P(led_usb_state.num_lock    ? PSTR("NUMLCK ") : PSTR("       "), false);
         oled_write_P(led_usb_state.caps_lock   ? PSTR("CAPLCK ") : PSTR("       "), false);
         oled_write_P(led_usb_state.scroll_lock ? PSTR("SCRLCK ") : PSTR("       "), false);
@@ -336,3 +339,28 @@ void keyboard_post_init_user(void) {
     rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
 }
 #endif
+
+bool process_global_quick_tap(uint16_t keycode, keyrecord_t *record) {
+  static uint16_t global_quick_tap_timer = 0;
+  if (keycode < QK_MOD_TAP || keycode > QK_MOD_TAP_MAX) {
+    global_quick_tap_timer = timer_read();
+    return true;
+  }
+  if (timer_elapsed(global_quick_tap_timer) > TAPPING_TERM) {
+    return true;
+  }
+  if (record->event.pressed) {
+    keycode = keycode & 0xFF;
+    global_quick_tap_timer = timer_read();
+    tap_code(keycode);
+    return false;
+  }
+  return true;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!process_global_quick_tap(keycode, record)) {
+        return false;
+    }
+    return true;
+}
