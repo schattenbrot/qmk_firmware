@@ -58,17 +58,31 @@ enum layers {
 // produces the key `tap` when tapped (i.e. pressed and released).
 
 // -------------------------------------------------------------------------------------------------
+// Keycodes
+// -------------------------------------------------------------------------------------------------
+enum my_keycodes {
+    BPRN = SAFE_RANGE,
+    BBRC,
+    BCBR,
+    LTGT
+};
+
+// -------------------------------------------------------------------------------------------------
 // Combos
 // -------------------------------------------------------------------------------------------------
 enum combos {
     WF_LBRC,
     FP_RBRC,
+    WP_BBRC,
     XC_LCBR,
     CD_RCBR,
+    XD_BCBR,
     LU_LPRN,
     UY_RPRN,
+    LY_BPRN,
     HCom_LT,
     CoDo_GT,
+    HCom_GT,
     COMBO_LENGTH
 };
 
@@ -76,22 +90,30 @@ uint16_t COMBO_LEN = COMBO_LENGTH;
 
 const uint16_t PROGMEM wf_combo[] = {KC_W, KC_F, COMBO_END};
 const uint16_t PROGMEM fp_combo[] = {KC_F, KC_P, COMBO_END};
+const uint16_t PROGMEM wp_combo[] = {KC_W, KC_P, COMBO_END};
 const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
 const uint16_t PROGMEM cd_combo[] = {KC_C, KC_D, COMBO_END};
+const uint16_t PROGMEM xd_combo[] = {KC_X, KC_D, COMBO_END};
 const uint16_t PROGMEM lu_combo[] = {KC_L, KC_U, COMBO_END};
 const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
+const uint16_t PROGMEM ly_combo[] = {KC_L, KC_Y, COMBO_END};
 const uint16_t PROGMEM hcom_combo[] = {KC_H, KC_COMM, COMBO_END};
 const uint16_t PROGMEM codo_combo[] = {KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM hdo_combo[] = {KC_H, KC_DOT, COMBO_END};
 
 combo_t key_combos[] = {
     [WF_LBRC] = COMBO(wf_combo, KC_LBRC),
     [FP_RBRC] = COMBO(fp_combo, KC_RBRC),
+    [WP_BBRC] = COMBO(wp_combo, BBRC),
     [XC_LCBR] = COMBO(xc_combo, KC_LCBR),
     [CD_RCBR] = COMBO(cd_combo, KC_RCBR),
-    [LU_LPRN] = COMBO(wf_combo, KC_LPRN),
-    [UY_RPRN] = COMBO(wf_combo, KC_RPRN),
-    [HCom_LT] = COMBO(wf_combo, KC_LT),
-    [CoDo_GT] = COMBO(wf_combo, KC_GT),
+    [XD_BCBR] = COMBO(xd_combo, BCBR),
+    [LU_LPRN] = COMBO(lu_combo, KC_LPRN),
+    [UY_RPRN] = COMBO(uy_combo, KC_RPRN),
+    [LY_BPRN] = COMBO(ly_combo, BPRN),
+    [HCom_LT] = COMBO(hcom_combo, KC_LT),
+    [CoDo_GT] = COMBO(codo_combo, KC_GT),
+    [HCom_GT] = COMBO(hcom_combo, LTGT),
 };
 
 // clang-format off
@@ -372,6 +394,30 @@ bool process_global_quick_tap(uint16_t keycode, keyrecord_t *record) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_global_quick_tap(keycode, record)) {
         return false;
+    }
+
+    switch (keycode) {
+        case BPRN:
+            if (record->event.pressed) {
+                SEND_STRING("()");
+            }
+            return false;
+        case BBRC:
+            if (record->event.pressed) {
+                SEND_STRING("[]");
+            }
+            return false;
+        case BCBR:
+            if (record->event.pressed) {
+                SEND_STRING("{}");
+            }
+            return false;
+        case LTGT:
+            if (record->event.pressed) {
+                SEND_STRING("<>");
+            }
+            return false;
+        default: return true;
     }
     return true;
 }
