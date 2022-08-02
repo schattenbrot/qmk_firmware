@@ -22,10 +22,8 @@ enum layers {
     _NAV,
     _SYM,
     _NUM,
-    _FUNCTION,
-    _BRACKETS
+    _FUNCTION
 };
-
 
 // Aliases for readability
 #define COLEMAK  DF(_COLEMAK_DH)
@@ -37,7 +35,6 @@ enum layers {
 
 #define FK_SPC   LT(_FUNCTION, KC_SPC)
 #define NAV_SPC  LT(_NAV, KC_SPC)
-#define BRC_ENT  LT(_BRACKETS, KC_ENT)
 
 #define GAMING2  OSL(_GAMING2)
 
@@ -60,6 +57,43 @@ enum layers {
 // The notation `mod/tap` denotes a key that activates the modifier `mod` when held down, and
 // produces the key `tap` when tapped (i.e. pressed and released).
 
+// -------------------------------------------------------------------------------------------------
+// Combos
+// -------------------------------------------------------------------------------------------------
+enum combos {
+    WF_LBRC,
+    FP_RBRC,
+    XC_LCBR,
+    CD_RCBR,
+    LU_LPRN,
+    UY_RPRN,
+    HCom_LT,
+    CoDo_GT,
+    COMBO_LENGTH
+};
+
+uint16_t COMBO_LEN = COMBO_LENGTH;
+
+const uint16_t PROGMEM wf_combo[] = {KC_W, KC_F, COMBO_END};
+const uint16_t PROGMEM fp_combo[] = {KC_F, KC_P, COMBO_END};
+const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
+const uint16_t PROGMEM cd_combo[] = {KC_C, KC_D, COMBO_END};
+const uint16_t PROGMEM lu_combo[] = {KC_L, KC_U, COMBO_END};
+const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
+const uint16_t PROGMEM hcom_combo[] = {KC_H, KC_COMM, COMBO_END};
+const uint16_t PROGMEM codo_combo[] = {KC_COMM, KC_DOT, COMBO_END};
+
+combo_t key_combos[] = {
+    [WF_LBRC] = COMBO(wf_combo, KC_LBRC),
+    [FP_RBRC] = COMBO(fp_combo, KC_RBRC),
+    [XC_LCBR] = COMBO(xc_combo, KC_LCBR),
+    [CD_RCBR] = COMBO(cd_combo, KC_RCBR),
+    [LU_LPRN] = COMBO(wf_combo, KC_LPRN),
+    [UY_RPRN] = COMBO(wf_combo, KC_RPRN),
+    [HCom_LT] = COMBO(wf_combo, KC_LT),
+    [CoDo_GT] = COMBO(wf_combo, KC_GT),
+};
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
@@ -72,15 +106,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * | LShift |   Z  |   X  |   C  |   D  |   V  | [ {  |      |  |GAMING|  ] } |   K  |   H  | ,  < | . >  | /  ? | RShift |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      | LGUI | BRC/ | Space| Num  |  | Sym  | Space|BSpace| RAlt | Menu |
- *                        |      |      | Enter| Nav  |      |  |      | Fkeys|      |      |      |
+ *                        |      | LGUI | Enter| Space| Num  |  | Sym  | Space|BSpace| RAlt | Menu |
+ *                        |      |      |      | Nav  |      |  |      | Fkeys|      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_COLEMAK_DH] = LAYOUT(
      KC_TAB  ,  KC_Q ,  KC_W   ,  KC_F  , KC_P ,   KC_B ,                                          KC_J,   KC_L ,  KC_U ,   KC_Y ,KC_SCLN, KC_DEL,
      CTL_ESC , HOME_A, HOME_R  , HOME_S , HOME_T,  KC_G ,                                          KC_M, HOME_N , HOME_E, HOME_I ,HOME_O, CTL_QUOT,
      KC_LSFT ,  KC_Z ,  KC_X   ,  KC_C  , KC_D ,   KC_V ,   KC_LBRC , GAMING, GAMING  , KC_RBRC, KC_K,   KC_H ,KC_COMM, KC_DOT ,KC_SLSH, KC_RSFT,
-                                 _______, KC_LGUI, BRC_ENT, NAV_SPC , NUM    ,   SYM     ,FK_SPC,KC_BSPC, KC_RALT, KC_APP
+                                 _______, KC_LGUI, KC_ENT, NAV_SPC , NUM    ,   SYM     ,FK_SPC,KC_BSPC, KC_RALT, KC_APP
     ),
 
 /*
@@ -204,26 +238,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                  _______, KC_LALT, _______, KC_MINS, KC_EQL , _______, _______, _______, _______, _______
     ),
 
-/*
- * Brackets: Layer for brackets and some numbers
- *
- * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |      |      |      |      |      |                              |      |      |      |      |      |        |
- * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |      |   {  |   [  |   (  |      |                              |      |   )  |   ]  |   }  |      |        |
- * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |   1  |   2  |   3  |   4  |   5  |      |      |  |      |      |   6  |   7  |   8  |   9  |   0  |        |
- * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |      |      |  |      |      |      |      |      |
- *                        `----------------------------------'  `----------------------------------'
- */
-    [_BRACKETS] = LAYOUT(
-      _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
-      _______, _______, KC_LCBR, KC_LBRC, KC_LPRN, _______,                                     _______, KC_RPRN, KC_RBRC, KC_RCBR, _______, _______,
-      _______, KC_1   , KC_2   , KC_3   , KC_4   , KC_5   , _______, _______, _______, _______, KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , _______,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
-    ),
-
 // /*
 //  * Layer template
 //  *
@@ -291,9 +305,6 @@ bool oled_task_user(void) {
                 break;
             case _FUNCTION:
                 oled_write_P(PSTR("Function\n"), false);
-                break;
-            case _BRACKETS:
-                oled_write_P(PSTR("Brackets\n"), false);
                 break;
             default:
                 oled_write_P(PSTR("Undefined\n"), false);
@@ -363,4 +374,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
     return true;
+}
+
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        // Keycodes that continue Caps Word, with shift applied.
+        case KC_A ... KC_Z:
+        case KC_MINS:
+            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+            return true;
+
+        // Keycodes that continue Caps Word, without shifting.
+        case KC_1 ... KC_0:
+        case KC_BSPC:
+        case KC_DEL:
+        case KC_UNDS:
+        case KC_LALT:
+        case KC_RALT:
+        case KC_LCTL:
+        case KC_RCTL:
+        case KC_LSFT:
+        case KC_RSFT:
+        case KC_LGUI:
+        case KC_RGUI:
+            return true;
+
+        default:
+            return false;  // Deactivate Caps Word.
+    }
 }

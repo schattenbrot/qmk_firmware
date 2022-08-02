@@ -32,3 +32,6 @@
 
 // Lets you roll mod-tap keys
 #define IGNORE_MOD_TAP_INTERRUPT
+
+// Turns on one word caps when pressing both shifts at the same time
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
