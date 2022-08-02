@@ -113,7 +113,7 @@ combo_t key_combos[] = {
     [LY_BPRN] = COMBO(ly_combo, BPRN),
     [HCom_LT] = COMBO(hcom_combo, KC_LT),
     [CoDo_GT] = COMBO(codo_combo, KC_GT),
-    [HCom_GT] = COMBO(hcom_combo, LTGT),
+    [HCom_GT] = COMBO(hdo_combo, LTGT),
 };
 
 // clang-format off
