@@ -64,7 +64,8 @@ enum my_keycodes {
     BPRN = SAFE_RANGE,
     BBRC,
     BCBR,
-    LTGT
+    LTGT,
+    COLEQL
 };
 
 // -------------------------------------------------------------------------------------------------
@@ -83,6 +84,9 @@ enum combos {
     HCom_LT,
     CoDo_GT,
     HCom_GT,
+    YSCL_COL,
+    SCLDEL_EQL,
+    YDEL_COLEQL,
     COMBO_LENGTH
 };
 
@@ -101,6 +105,10 @@ const uint16_t PROGMEM hcom_combo[] = {KC_H, KC_COMM, COMBO_END};
 const uint16_t PROGMEM codo_combo[] = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM hdo_combo[] = {KC_H, KC_DOT, COMBO_END};
 
+const uint16_t PROGMEM yscl_combo[] = {KC_Y, KC_SCLN, COMBO_END};
+const uint16_t PROGMEM scldel_combo[] = {KC_SCLN, KC_DEL, COMBO_END};
+const uint16_t PROGMEM ydel_combo[] = {KC_Y, KC_DEL, COMBO_END};
+
 combo_t key_combos[] = {
     [WF_LBRC] = COMBO(wf_combo, KC_LBRC),
     [FP_RBRC] = COMBO(fp_combo, KC_RBRC),
@@ -114,6 +122,11 @@ combo_t key_combos[] = {
     [HCom_LT] = COMBO(hcom_combo, KC_LT),
     [CoDo_GT] = COMBO(codo_combo, KC_GT),
     [HCom_GT] = COMBO(hdo_combo, LTGT),
+
+    [YSCL_COL] = COMBO(yscl_combo, KC_COLN),
+    [SCLDEL_EQL] = COMBO(scldel_combo, KC_EQL),
+    [YDEL_COLEQL] = COMBO(ydel_combo, COLEQL),
+
 };
 
 // clang-format off
@@ -415,6 +428,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case LTGT:
             if (record->event.pressed) {
                 SEND_STRING("<>");
+            }
+            return false;
+        case COLEQL:
+            if (record->event.pressed) {
+                SEND_STRING(":=");
             }
             return false;
         default: return true;
