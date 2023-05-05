@@ -141,7 +141,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |Ctrl/Esc| Alt/A|Ctrl/R|Shft/S| GUI/T|RALT/G|                              |RALT/M| GUI/N|Shft/E|Ctrl/I| Alt/O|Ctrl/' "|
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   D  |   V  | [ {  |GAMING|  |GAMING|  ] } |   K  |   H  | ,  < | . >  | /  ? | RShift |
+ * | LShift |   Z  |   X  |   C  |   D  |   V  | [ {  |GAMING|  |GAMING|  ] } |   K  |   H  | ,  < | . >  | /  ? | \ | |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |   0  | Enter| Space| Num  |  | Sym  | Space|BSpace|   1  | Menu |
  *                        |      |      |      | Nav  |      |  |      | Fkeys|      |      |      |
@@ -150,7 +150,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_COLEMAK_DH] = LAYOUT(
      KC_TAB  ,  KC_Q ,  KC_W   ,  KC_F  , KC_P ,   KC_B ,                                          KC_J,   KC_L ,  KC_U ,   KC_Y ,KC_SCLN, KC_DEL,
      CTL_ESC , HOME_A, HOME_R  , HOME_S , HOME_T, HOME_G,                                        HOME_M, HOME_N , HOME_E, HOME_I ,HOME_O, CTL_QUOT,
-     KC_LSFT ,  KC_Z ,  KC_X   ,  KC_C  , KC_D ,   KC_V ,   KC_LBRC , GAMING, GAMING  , KC_RBRC, KC_K,   KC_H ,KC_COMM, KC_DOT ,KC_SLSH, KC_RSFT,
+     KC_LSFT ,  KC_Z ,  KC_X   ,  KC_C  , KC_D ,   KC_V ,   KC_LBRC , GAMING, GAMING  , KC_RBRC, KC_K,   KC_H ,KC_COMM, KC_DOT ,KC_SLSH, KC_BSLS,
                                   KC_5  , KC_0, KC_ENT, NAV_SPC , NUM    ,   SYM     ,FK_SPC,KC_BSPC, KC_1, KC_2
     ),
 
@@ -405,6 +405,18 @@ bool process_global_quick_tap(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+
+#ifdef COMBO_ENABLE
+bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
+    switch (get_highest_layer(layer_state | default_layer_state)) {
+        case _GAMING:
+        case _GAMING2:
+            return false;
+        default:
+            return true;
+    }
+}
+#endif
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_global_quick_tap(keycode, record)) {

@@ -26,6 +26,10 @@
 #    define RGBLIGHT_SPLIT
 #endif
 
+#ifdef COMBO_ENABLE
+#    define COMBO_SHOULD_TRIGGER
+#endif
+
 #define ONESHOT_TIMEOUT 1000
 
 // Lets you roll mod-tap keys
