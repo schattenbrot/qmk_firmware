@@ -26,8 +26,7 @@
 #    define RGBLIGHT_SPLIT
 #endif
 
-#define ONESHOT_TAP_TOGGLE 3
-#define ONESHOT_TIMEOUT 3000
+#define ONESHOT_TIMEOUT 1000
 
 // Lets you roll mod-tap keys
 #define IGNORE_MOD_TAP_INTERRUPT

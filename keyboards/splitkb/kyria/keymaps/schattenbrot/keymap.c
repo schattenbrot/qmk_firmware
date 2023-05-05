@@ -49,10 +49,12 @@ enum layers {
 #define HOME_R LCTL_T(KC_R)
 #define HOME_S LSFT_T(KC_S)
 #define HOME_T LGUI_T(KC_T)
-#define HOME_O RALT_T(KC_O)
+#define HOME_O LALT_T(KC_O)
 #define HOME_I RCTL_T(KC_I)
 #define HOME_E RSFT_T(KC_E)
 #define HOME_N RGUI_T(KC_N)
+#define HOME_G RALT_T(KC_G)
+#define HOME_M RALT_T(KC_M)
 // Note: LAlt/Enter (ALT_ENT) is not the same thing as the keyboard shortcut Alt+Enter.
 // The notation `mod/tap` denotes a key that activates the modifier `mod` when held down, and
 // produces the key `tap` when tapped (i.e. pressed and released).
@@ -137,19 +139,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-------------------------------------------.                              ,-------------------------------------------.
  * |  Tab   |   Q  |   W  |   F  |   P  |   B  |                              |   J  |   L  |   U  |   Y  | ;  : | Delete |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |Ctrl/Esc| Alt/A|Ctrl/R|Shft/S| GUI/T|   G  |                              |   M  | GUI/N|Shft/E|Ctrl/I| Alt/O|Ctrl/' "|
+ * |Ctrl/Esc| Alt/A|Ctrl/R|Shft/S| GUI/T|RALT/G|                              |RALT/M| GUI/N|Shft/E|Ctrl/I| Alt/O|Ctrl/' "|
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   D  |   V  | [ {  |      |  |GAMING|  ] } |   K  |   H  | ,  < | . >  | /  ? | RShift |
+ * | LShift |   Z  |   X  |   C  |   D  |   V  | [ {  |GAMING|  |GAMING|  ] } |   K  |   H  | ,  < | . >  | /  ? | RShift |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      | LGUI | Enter| Space| Num  |  | Sym  | Space|BSpace| RAlt | Menu |
+ *                        |      |   0  | Enter| Space| Num  |  | Sym  | Space|BSpace|   1  | Menu |
  *                        |      |      |      | Nav  |      |  |      | Fkeys|      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_COLEMAK_DH] = LAYOUT(
      KC_TAB  ,  KC_Q ,  KC_W   ,  KC_F  , KC_P ,   KC_B ,                                          KC_J,   KC_L ,  KC_U ,   KC_Y ,KC_SCLN, KC_DEL,
-     CTL_ESC , HOME_A, HOME_R  , HOME_S , HOME_T,  KC_G ,                                          KC_M, HOME_N , HOME_E, HOME_I ,HOME_O, CTL_QUOT,
+     CTL_ESC , HOME_A, HOME_R  , HOME_S , HOME_T, HOME_G,                                        HOME_M, HOME_N , HOME_E, HOME_I ,HOME_O, CTL_QUOT,
      KC_LSFT ,  KC_Z ,  KC_X   ,  KC_C  , KC_D ,   KC_V ,   KC_LBRC , GAMING, GAMING  , KC_RBRC, KC_K,   KC_H ,KC_COMM, KC_DOT ,KC_SLSH, KC_RSFT,
-                                 _______, KC_LGUI, KC_ENT, NAV_SPC , NUM    ,   SYM     ,FK_SPC,KC_BSPC, KC_RALT, KC_APP
+                                  KC_5  , KC_0, KC_ENT, NAV_SPC , NUM    ,   SYM     ,FK_SPC,KC_BSPC, KC_1, KC_2
     ),
 
 /*
@@ -182,14 +184,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |      |  |      |      | Pause|M Prev|M Play|M Next|VolMut| PrtSc  |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |CapsLk| ScLck|  |      |      |      |      |      |
+ *                        |      |      |      |CapsLk| ScLck|  |      |      |      |      | Menu |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_NAV] = LAYOUT(
       _______, _______, _______, _______, _______, _______,                                     KC_PGUP, KC_HOME, KC_PGDN, KC_END,  _______, KC_DEL,
       _______, KC_LALT, KC_LCTL, KC_LSFT, KC_LGUI, _______,                                     KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, _______, KC_INS,
       _______, _______, _______, _______, _______, _______, _______, _______, KC_CAPS, KC_SLCK, _______, _______, _______, _______, _______, KC_PSCR,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_APP
     ),
 
 /*
