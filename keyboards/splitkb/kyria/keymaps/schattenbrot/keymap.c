@@ -136,22 +136,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
  * Base Layer: Colemak DH
  *
- * ,-------------------------------------------.                              ,-------------------------------------------.
- * |  Tab   |   Q  |   W  |   F  |   P  |   B  |                              |   J  |   L  |   U  |   Y  | ;  : | Delete |
- * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |Ctrl/Esc| Alt/A|Ctrl/R|Shft/S| GUI/T|RALT/G|                              |RALT/M| GUI/N|Shft/E|Ctrl/I| Alt/O|Ctrl/' "|
- * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   D  |   V  | [ {  |GAMING|  |GAMING|  ] } |   K  |   H  | ,  < | . >  | /  ? | \ | |
- * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |   0  | Enter| Space| Num  |  | Sym  | Space|BSpace|   1  | Menu |
- *                        |      |      |      | Nav  |      |  |      | Fkeys|      |      |      |
- *                        `----------------------------------'  `----------------------------------'
+ * ,-----------------------------------------------------.                              ,-------------------------------------------.
+ * |  Tab   |   Q    |    W   |   F    |   P    |   B    |                              |   J  |   L  |   U  |   Y  | ;  : | Delete |
+ * |--------+--------+--------+--------+--------+--------|                              |------+------+------+------+------+--------|
+ * |  Esc   | Alt/A  | Ctrl/R | Shft/S | GUI/T  | RALT/G |                              |RALT/M| GUI/N|Shft/E|Ctrl/I| Alt/O|Ctrl/' "|
+ * |--------+--------+--------+--------+--------+--------+----------------.  ,-------------+------+------+------+------+------+--------|
+ * | LShift |   Z    |    X   |   C    |   D    |   V    | [ {    |GAMING |  |GAMING|  ] } |   K  |   H  | ,  < | . >  | /  ? | \ | |
+ * `--------------------------+--------+--------+--------+--------+-------|  |------+------+------+------+------+----------------------'
+ *                            |    5   |   0    | Enter  | Space  | Num   |  | Sym  | Space|BSpace|   1  |   2  |
+ *                            |        |        |        | Nav    |       |  |      | Fkeys|      |      |      |
+ *                            `-------------------------------------------'  `----------------------------------'
  */
     [_COLEMAK_DH] = LAYOUT(
-     KC_TAB  ,  KC_Q ,  KC_W   ,  KC_F  , KC_P ,   KC_B ,                                          KC_J,   KC_L ,  KC_U ,   KC_Y ,KC_SCLN, KC_DEL,
-     CTL_ESC , HOME_A, HOME_R  , HOME_S , HOME_T, HOME_G,                                        HOME_M, HOME_N , HOME_E, HOME_I ,HOME_O, CTL_QUOT,
-     KC_LSFT ,  KC_Z ,  KC_X   ,  KC_C  , KC_D ,   KC_V ,   KC_LBRC , GAMING, GAMING  , KC_RBRC, KC_K,   KC_H ,KC_COMM, KC_DOT ,KC_SLSH, KC_BSLS,
-                                  KC_5  , KC_0, KC_ENT, NAV_SPC , NUM    ,   SYM     ,FK_SPC,KC_BSPC, KC_1, KC_2
+     KC_TAB  ,  KC_Q ,  KC_W   ,  KC_F  , KC_P  ,  KC_B ,                                          KC_J,   KC_L ,  KC_U ,   KC_Y ,KC_SCLN, KC_DEL,
+     KC_ESC  , HOME_A, HOME_R  , HOME_S , HOME_T, HOME_G,                                        HOME_M, HOME_N , HOME_E, HOME_I ,HOME_O, CTL_QUOT,
+     KC_LSFT ,  KC_Z ,  KC_X   ,  KC_C  , KC_D  ,  KC_V , KC_LBRC , GAMING , GAMING  , KC_RBRC, KC_K,   KC_H ,KC_COMM, KC_DOT ,KC_SLSH, KC_BSLS,
+                                  KC_5  , KC_0  , KC_ENT, NAV_SPC , NUM    ,   SYM     ,FK_SPC,KC_BSPC, KC_1, KC_2
     ),
 
 /*
@@ -381,9 +381,9 @@ bool oled_task_user(void) {
 #ifdef RGBLIGHT_ENABLE
 void keyboard_post_init_user(void) {
 //   rgblight_enable_noeeprom(); // Enables RGB, without saving settings
-    rgblight_reload_from_eeprom();
-    rgblight_sethsv(220, 255, 150);
-//   rgblight_sethsv_noeeprom(220, 255, 150);
+    // rgblight_reload_from_eeprom();
+    rgblight_sethsv_noeeprom(220, 255, 150);
+    // rgblight_sethsv_noeeprom(220, 255, 50);
     rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
 }
 #endif
